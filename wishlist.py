@@ -52,7 +52,6 @@ def new_book():
     datastore.add_book(new_book)
     ui.message('Book added: ' + str(new_book))
 
-
 def quit():
     '''Perform shutdown tasks'''
     datastore.shutdown()

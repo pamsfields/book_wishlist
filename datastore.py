@@ -1,15 +1,18 @@
 
 import os
+import json
 from book import Book
 
-DATA_DIR = 'data'
+DATA_DIR = 'book_list'
 BOOKS_FILE_NAME = os.path.join(DATA_DIR, 'wishlist.txt')
 COUNTER_FILE_NAME = os.path.join(DATA_DIR, 'counter.txt')
 
 separator = '^^^'  # a string probably not in any valid data relating to a book
 
-book_list = []
+book_list = {}
+book_list['books'] =[]
 counter = 0
+#set up dictionary for json file
 
 def setup():
     ''' Read book info from file, if file exists. '''
@@ -44,7 +47,7 @@ def shutdown():
     try:
         os.mkdir(DATA_DIR)
     except FileExistsError:
-        pass # Ignore - if directory exists, don't need to do anything. 
+        pass # Ignore - if directory exists, don't need to do anything.
 
     with open(BOOKS_FILE_NAME, 'w') as f:
         f.write(output_data)
@@ -62,7 +65,7 @@ def get_books(**kwargs):
         return book_list
 
     if 'read' in kwargs:
-        read_books = [ book for book in book_list if book.read == kwargs['read'] ]
+        read_books = [ book for book in book_list['books'] if book.read == kwargs['read'] ]
         return read_books
 
 
@@ -73,7 +76,14 @@ def add_book(book):
     global book_list
 
     book.id = generate_id()
-    book_list.append(book)
+    booklist['books'].append({
+    'title': data[1],
+    'author': data[2],
+    'read': data[3],
+    'book_id': data[4]
+    })
+    with open('wishlist.txt', 'w') as outfile:
+        json.dump(data, outfile)
 
 
 def generate_id():
@@ -107,7 +117,14 @@ def make_book_list(string_from_file):
     for book_str in books_str:
         data = book_str.split(separator)
         book = Book(data[0], data[1], data[2] == 'True', int(data[3]))
-        book_list.append(book)
+        booklist['books'].append({
+            'title': data[1],
+            'author': data[2],
+            'read': data[3],
+            'id': data[4]
+            })
+        with open('wishlist.txt', 'w') as outfile:
+            json.dump(data, outfile)
 
 
 def make_output_data():

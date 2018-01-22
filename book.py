@@ -1,6 +1,8 @@
 class Book:
 
     ''' Represents one book in a user's list of books'''
+    '''need to import datetime'''
+    import datetime
 
     NO_ID = -1
 
