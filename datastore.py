@@ -1,11 +1,10 @@
-
 import os
 import json
 from book import Book
 import datetime
 
 DATA_DIR = 'book_list'
-BOOKS_FILE_NAME = os.path.join(DATA_DIR, 'wishlist.txt')
+BOOKS_FILE_NAME = os.path.join(DATA_DIR, 'wishlist.json')
 COUNTER_FILE_NAME = os.path.join(DATA_DIR, 'counter.txt')
 
 separator = '^^^'  # a string probably not in any valid data relating to a book
@@ -65,7 +64,7 @@ def get_books(**kwargs):
         return book_list
 
     if 'read' in kwargs:
-        read_books = [ book for book in book_list['books'] if book.read == kwargs['read'] ]
+        read_books = [ book for book in book_list if book.read == kwargs['read'] ]
         return read_books
 
 
@@ -140,3 +139,13 @@ def make_output_data():
                   "id": str(book.id)} for book in book_list]
 
     return all_books_string
+
+def delete_book(book_id):
+    '''Get book from db by id, remove book and return result'''
+    global book_list
+    for book in book_list:
+        if book.id == book_id:
+            book_list.remove(book)
+            return True
+        else:
+            return False

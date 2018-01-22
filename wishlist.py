@@ -18,6 +18,9 @@ def handle_choice(choice):
     elif choice == '4':
         new_book()
 
+    elif choice == '5':
+        delete_book()
+
     elif choice == 'q':
         quit()
 
@@ -40,11 +43,29 @@ def show_read():
 def book_read():
     ''' Get choice from user, edit datastore, display success/error'''
     book_id = ui.ask_for_book_id()
+    rating = ''
+    while rating not in range(1,5):
+        try:
+            rating = int(input('Please enter a rating low (1) to high (5):'))
+            if rating not in range(1,5):
+                print('Rating is not in range, please try again')
+        except ValueError:
+            print('Please enter a valid integer')
+
+        rating = ('*' * rating)
+
     if datastore.set_read(book_id, True):
         ui.message('Successfully updated')
     else:
         ui.message('Book id not found in database')
 
+def delete_book():
+    '''Get book id from user, delete selected book if '''
+    book_id = ui.ask_for_book_id()
+    if datastore.delete_book(book_id):
+        ui.message('Book deleted')
+    else:
+        ui.message('Book id not found in database')
 
 def new_book():
     '''Get info from user, add new book'''

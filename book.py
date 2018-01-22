@@ -11,6 +11,7 @@ class Book:
         self.author = author
         self.read = read
         self.read_date = read_date
+        self.rating = rating
         self.id=id
 
 
@@ -32,8 +33,8 @@ class Book:
 
 
         template = 'id: {} Title: {} Author: {} Read: {} ReadDate: {}'
-        return template.format(id_str, self.title, self.author, read_str, self.read_date)
+        return template.format(id_str, self.title, self.author, read_str, self.read_date. self.rating)
 
 
     def __eq__(self, other):
-        return self.title == other.title and self.author == other.author and self.read == other.read and self.id==other.id and self.read_date == other.read_date
+        return self.title == other.title and self.author == other.author and self.read == other.read and self.id==other.id and self.read_date == other.read_date and self.rating == other.rating
