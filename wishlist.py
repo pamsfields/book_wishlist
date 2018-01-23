@@ -18,6 +18,9 @@ def handle_choice(choice):
     elif choice == '4':
         new_book()
 
+    elif choice == '5':
+        sort_book()
+
     elif choice == 'q':
         quit()
 
@@ -52,6 +55,21 @@ def new_book():
     datastore.add_book(new_book)
     ui.message('Book added: ' + str(new_book))
 
+def sort_book():
+    '''Sort the books either by title or by author'''
+    books_to_sort = datastore.get_books()
+    sortBook = int(input('Enter the sort option. 1 = title, 2 = author: '))
+    while True:
+        if(sortBook == 1):
+            sorted_books = sorted(books_to_sort, key = lambda book: book.title)
+            ui.show_list(sorted_books)
+            break
+        elif(sortBook == 2):
+            sorted_books = sorted(books_to_sort, key = lambda book: book.author)
+            ui.show_list(sorted_books)
+            break
+        else:
+            sortBook = int(input('Enter the correct options (1 = title, 2 = author): '))
 
 def quit():
     '''Perform shutdown tasks'''
