@@ -11,6 +11,7 @@ def display_menu_get_choice():
         3. Mark a book as read
         4. Add book to wishlist
         5. sort the book by (title or author)
+        6. search book by id
         q. Quit
     ''')
 

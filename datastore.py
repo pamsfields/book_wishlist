@@ -1,15 +1,17 @@
-
 import os
+import json
 from book import Book
+import datetime
 
-DATA_DIR = 'data'
-BOOKS_FILE_NAME = os.path.join(DATA_DIR, 'wishlist.txt')
+DATA_DIR = 'book_list'
+BOOKS_FILE_NAME = os.path.join(DATA_DIR, 'wishlist.json')
 COUNTER_FILE_NAME = os.path.join(DATA_DIR, 'counter.txt')
 
 separator = '^^^'  # a string probably not in any valid data relating to a book
 
 book_list = []
 counter = 0
+#set up dictionary for json file
 
 def setup():
     ''' Read book info from file, if file exists. '''
@@ -18,7 +20,7 @@ def setup():
 
     try :
         with open(BOOKS_FILE_NAME) as f:
-            data = f.read()
+            data = json.loads(f.read())
             make_book_list(data)
     except FileNotFoundError:
         # First time program has run. Assume no books.
@@ -44,10 +46,10 @@ def shutdown():
     try:
         os.mkdir(DATA_DIR)
     except FileExistsError:
-        pass # Ignore - if directory exists, don't need to do anything. 
+        pass # Ignore - if directory exists, don't need to do anything.
 
     with open(BOOKS_FILE_NAME, 'w') as f:
-        f.write(output_data)
+        f.write(json.dumps(output_data))
 
     with open(COUNTER_FILE_NAME, 'w') as f:
         f.write(str(counter))
@@ -91,22 +93,30 @@ def set_read(book_id, read):
 
         if book.id == book_id:
             book.read = True
+            book.read_date = datetime.date
             return True
 
     return False # return False if book id is not found
 
 
 
-def make_book_list(string_from_file):
+def make_book_list(all_books_string):
     ''' turn the string from the file into a list of Book objects'''
 
     global book_list
 
-    books_str = string_from_file.split('\n')
+    for object in all_books_string:
+        title = object['title']
+        author = object['author']
+        read = False
+        id = object['id']
+        if object['read'] == 'True':
+            read = True
+            date_read = object['date_read']
+            book = Book(title, author, read, date_read, int(id))
+        else:
+            book = Book(title, author, read, int(id))
 
-    for book_str in books_str:
-        data = book_str.split(separator)
-        book = Book(data[0], data[1], data[2] == 'True', int(data[3]))
         book_list.append(book)
 
 
@@ -122,6 +132,20 @@ def make_output_data():
         output_str = separator.join(output)
         output_data.append(output_str)
 
-    all_books_string = '\n'.join(output_data)
+    all_books_string = [{"title": book.title,
+                  "author": book.author,
+                  "read": str(book.read),
+                  "date_read": book.date_read,
+                  "id": str(book.id)} for book in book_list]
 
     return all_books_string
+
+def delete_book(book_id):
+    '''Get book from db by id, remove book and return result'''
+    global book_list
+    for book in book_list:
+        if book.id == book_id:
+            book_list.remove(book)
+            return True
+        else:
+            return False
