@@ -21,8 +21,8 @@ def handle_choice(choice):
     elif choice == '5':
         sort_book()
 
-    #elif choice == '6':
-        #search_book()
+    elif choice == '6':
+        search_book()
 
     #elif choice == '7':
         #edit_book()
@@ -98,6 +98,15 @@ def sort_book():
         else:
             sortBook = int(input('Enter the correct options (1 = title, 2 = author): '))
 
+def search_book():
+    books_to_search = datastore.get_books()
+    search_id = int(input('Enter book\'s id to begin search: '))
+    books = [book for book in books_to_search if book.id == search_id]
+    if len(books) == 0:
+        print('Book not found.')
+    else:
+        for b in books:
+            print(b)
 
 
 
