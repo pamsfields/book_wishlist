@@ -24,8 +24,8 @@ def handle_choice(choice):
     elif choice == '6':
         search_book()
 
-    #elif choice == '7':
-        #edit_book()
+    elif choice == '7':
+        edit_book()
 
     elif choice == '8':
         delete_book()
@@ -57,9 +57,9 @@ def book_read():
         try:
             rating = int(input('Please enter a rating low (1) to high (5):'))
             if rating not in range(1,5):
-                print('Rating is not in range, please try again')
+                ui.message('Rating is not in range, please try again')
         except ValueError:
-            print('Please enter a valid integer')
+            ui.message('Please enter a valid integer')
 
         rating = ('*' * rating)
 
@@ -103,10 +103,19 @@ def search_book():
     search_id = int(input('Enter book\'s id to begin search: '))
     books = [book for book in books_to_search if book.id == search_id]
     if len(books) == 0:
-        print('Book not found.')
+        ui.message('Book not found.')
     else:
         for b in books:
             print(b)
+
+
+def edit_book():
+    '''search book by id and edit author and title'''
+    book_id = ui.ask_for_book_id()
+    if datastore.edit_book(book_id):
+        ui.message('Book\'s author and title Successfully edited')
+    else:
+        ui.message('Book not found in the database.')
 
 
 

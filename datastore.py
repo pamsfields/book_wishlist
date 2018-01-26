@@ -149,3 +149,17 @@ def delete_book(book_id):
             return True
         else:
             return False
+
+def edit_book(id):
+    '''edit author and title'''
+    global book_list
+    for book in book_list:
+        if book.id == id:
+            print('Author:{} Title: {}\n'.format(book.author, book.title))
+            new_author = input('Enter name of new author: ')
+            book.author = new_author
+            new_title = input('Enter the new title: ')
+            book.title = new_title
+            return True
+        else:
+            return False
