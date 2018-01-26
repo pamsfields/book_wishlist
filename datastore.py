@@ -135,7 +135,7 @@ def make_output_data():
     all_books_string = [{"title": book.title,
                   "author": book.author,
                   "read": str(book.read),
-                  "date_read": book.date_read,
+                  "date_read": book.read_date,
                   "id": str(book.id)} for book in book_list]
 
     return all_books_string

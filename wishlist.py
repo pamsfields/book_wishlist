@@ -21,8 +21,14 @@ def handle_choice(choice):
     elif choice == '5':
         sort_book()
 
-    elif choice == '6':
-        search_book()
+    #elif choice == '6':
+        #search_book()
+
+    #elif choice == '7':
+        #edit_book()
+
+    elif choice == '8':
+        delete_book()
 
     elif choice == 'q':
         quit()
@@ -92,17 +98,8 @@ def sort_book():
         else:
             sortBook = int(input('Enter the correct options (1 = title, 2 = author): '))
 
-def search_book():
-    books_to_search = datastore.get_books()
-    search_id = int(input('Enter book\'s id to begin search: '))
-    for book in books_to_search:
-        while True:
-            if(search_id == book.id):
-                print(book)
-                break
-        else:
-            print('Book not found.')
-    
+
+
 
 def quit():
     '''Perform shutdown tasks'''
