@@ -61,7 +61,7 @@ def book_read():
         except ValueError:
             ui.message('Please enter a valid integer')
 
-        rating = ('*' * rating)
+    rating = ('*' * rating)
 
     if datastore.set_read(book_id, True):
         ui.message('Successfully updated')

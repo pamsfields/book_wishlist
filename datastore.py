@@ -1,7 +1,8 @@
+
 import os
 import json
 from book import Book
-import datetime
+from datetime import datetime
 
 DATA_DIR = 'book_list'
 BOOKS_FILE_NAME = os.path.join(DATA_DIR, 'wishlist.json')
@@ -68,14 +69,19 @@ def get_books(**kwargs):
         return read_books
 
 
-
 def add_book(book):
     ''' Add to db, set id value, return Book'''
 
     global book_list
-
-    book.id = generate_id()
-    book_list.append(book)
+    for b in book_list:
+        if book.title == b.title and book.author == b.author and b.read == False:
+            print('This book is not read yet.')
+        elif book.title == b.title and book.author == b.author and b.read == True:
+            print('This book has been read. Do you want to add it to wishlist again?')
+            response = input('Enter Y to add and n to discard: ')
+            if(response.upper() == "Y"):
+                book.id = generate_id()
+                book_list.append(book)
 
 
 def generate_id():
